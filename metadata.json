@@ -1,0 +1,7 @@
+{
+  "name": "Shanghai Greater China | Hair Salon in Central London",
+  "description": "Shanghai Greater China is a hair salon on Gerrard Street in Central London, offering haircuts, styling, colouring, extensions and more. Call to enquire.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
