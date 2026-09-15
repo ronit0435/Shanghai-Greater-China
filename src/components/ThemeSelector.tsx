@@ -55,7 +55,7 @@ export default function ThemeSelector() {
       {isOpen && (
         <div
           id="theme-palette-dropdown"
-          className="absolute right-0 mt-2 w-72 sm:w-80 p-4 rounded-xs shadow-2xl border z-50 animate-fade-in-up"
+          className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-xs sm:w-80 sm:max-w-none p-4 rounded-xs shadow-2xl border z-50 animate-fade-in-up"
           style={{
             backgroundColor: 'var(--color-card)',
             borderColor: 'var(--color-border)',
@@ -149,6 +149,94 @@ export default function ThemeSelector() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Mobile-optimised theme selector designed to sit seamlessly inside the mobile navigation drawer
+ */
+export function MobileThemeSelector({ onSelect }: { onSelect?: (themeId: ThemeId) => void }) {
+  const { currentTheme, setTheme } = useTheme();
+
+  return (
+    <div className="w-full space-y-2.5">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Palette className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
+          <span className="text-xs uppercase tracking-[0.18em] font-semibold" style={{ color: 'var(--color-text)' }}>
+            Salon Aesthetic &amp; Theme
+          </span>
+        </div>
+        <span className="text-[10px] uppercase font-mono tracking-wider opacity-60" style={{ color: 'var(--color-text-muted)' }}>
+          3 Palettes
+        </span>
+      </div>
+
+      {/* 3 Theme Options Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        {THEME_OPTIONS.map((theme) => {
+          const isSelected = currentTheme === theme.id;
+          return (
+            <button
+              key={theme.id}
+              id={`mobile-theme-btn-${theme.id}`}
+              type="button"
+              onClick={() => {
+                setTheme(theme.id);
+                if (onSelect) onSelect(theme.id);
+              }}
+              className={`flex items-center justify-between p-3 rounded-xs border text-left transition-all active:scale-[0.98] cursor-pointer shadow-xs ${
+                isSelected ? 'ring-2' : 'opacity-85 hover:opacity-100'
+              }`}
+              style={{
+                backgroundColor: theme.bgHex,
+                borderColor: isSelected ? theme.accentHex : 'rgba(128,128,128,0.3)',
+                color: theme.textHex,
+              }}
+            >
+              <div className="flex items-center gap-2.5">
+                {/* Swatches */}
+                <div className="flex items-center -space-x-1.5 shrink-0">
+                  <span
+                    className="w-4 h-4 rounded-full border border-white/25 shadow-xs"
+                    style={{ backgroundColor: theme.bgHex }}
+                  />
+                  <span
+                    className="w-4 h-4 rounded-full border border-white/25 shadow-xs"
+                    style={{ backgroundColor: theme.accentHex }}
+                  />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold block tracking-wide leading-tight">
+                    {theme.name}
+                  </span>
+                  <span className="text-[10px] opacity-70 block leading-tight mt-0.5">
+                    {theme.subtitle}
+                  </span>
+                </div>
+              </div>
+
+              {isSelected ? (
+                <span
+                  className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 ml-2"
+                  style={{
+                    backgroundColor: theme.accentHex,
+                    color: theme.isDark ? '#0C0A0D' : '#FAF8F5',
+                  }}
+                >
+                  <Check className="w-3 h-3 stroke-[3]" />
+                </span>
+              ) : (
+                <span
+                  className="w-2 h-2 rounded-full border shrink-0 ml-2 opacity-40"
+                  style={{ borderColor: theme.accentHex }}
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

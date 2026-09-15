@@ -110,7 +110,7 @@ export default function Hero({ onOpenDirectionsModal }: HeroProps) {
             {/* Main Headline: Animated Word by Word Entrance */}
             <h1
               id="hero-main-heading"
-              className="font-serif-title text-5xl sm:text-6xl md:text-7xl xl:text-[84px] font-normal leading-[1.03] tracking-[-0.02em] mb-6 flex flex-wrap gap-x-4 gap-y-1"
+              className="font-serif-title text-4xl sm:text-6xl md:text-7xl xl:text-[84px] font-normal leading-[1.03] tracking-[-0.02em] mb-6 flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1"
               style={{ color: 'var(--color-text)' }}
             >
               {headlineWords.map((word, i) => (
@@ -241,7 +241,7 @@ export default function Hero({ onOpenDirectionsModal }: HeroProps) {
                 }}
               >
                 {/* Active Image with smooth crossfade and zoom on hover */}
-                <div className="relative h-[480px] sm:h-[540px] lg:h-[580px] overflow-hidden">
+                <div className="relative h-[400px] sm:h-[540px] lg:h-[580px] overflow-hidden">
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={activeImageIndex}

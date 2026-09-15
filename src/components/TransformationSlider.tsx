@@ -110,7 +110,11 @@ export default function TransformationSlider({ onOpenEnquiry }: TransformationSl
                 onMouseUp={() => setIsDragging(false)}
                 onMouseLeave={() => setIsDragging(false)}
                 onMouseMove={handleMouseMove}
+                onTouchStart={(e) => {
+                  if (e.touches[0]) handleMove(e.touches[0].clientX);
+                }}
                 onTouchMove={handleTouchMove}
+                onClick={(e) => handleMove(e.clientX)}
                 className="relative h-[380px] sm:h-[480px] lg:h-[520px] w-full overflow-hidden select-none border rounded-xs shadow-xl cursor-ew-resize group"
                 style={{
                   borderColor: 'var(--color-border)',

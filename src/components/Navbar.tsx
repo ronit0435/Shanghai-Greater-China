@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Phone, Menu, X, Clock, MapPin, ChevronRight } from 'lucide-react';
+import { Phone, Menu, X, Clock, MapPin, ChevronRight, Sparkles, Scissors, Image as ImageIcon, Star, Compass } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/salonData';
 import { isSalonOpenNow, scrollToSection } from '../utils/salonUtils';
-import ThemeSelector from './ThemeSelector';
+import ThemeSelector, { MobileThemeSelector } from './ThemeSelector';
 
 interface NavbarProps {
   onOpenEnquiry?: (serviceName?: string) => void;
@@ -48,14 +48,14 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
   }, []);
 
   const navLinks = [
-    { label: 'Home', id: 'hero' },
-    { label: 'About', id: 'about' },
-    { label: 'Services', id: 'services' },
-    { label: 'Transformations', id: 'transformations' },
-    { label: 'Gallery', id: 'gallery' },
-    { label: 'Reviews', id: 'reviews' },
-    { label: 'Location', id: 'location' },
-    { label: 'Contact', id: 'contact' },
+    { label: 'Home', id: 'hero', icon: Compass },
+    { label: 'About', id: 'about', icon: Sparkles },
+    { label: 'Services', id: 'services', icon: Scissors },
+    { label: 'Transformations', id: 'transformations', icon: Sparkles },
+    { label: 'Gallery', id: 'gallery', icon: ImageIcon },
+    { label: 'Reviews', id: 'reviews', icon: Star },
+    { label: 'Location', id: 'location', icon: MapPin },
+    { label: 'Contact', id: 'contact', icon: Phone },
   ];
 
   const handleNavClick = (id: string) => {
@@ -79,7 +79,7 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
       }}
     >
       {/* Main Navigation Bar - Rock-solid steady height with balanced 3-column optical alignment */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4 lg:gap-8">
         
         {/* Column 1 (Left): Brand Identity & Location */}
         <a
@@ -89,20 +89,20 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
             handleNavClick('hero');
           }}
           id="brand-logo"
-          className="group flex flex-col justify-center shrink-0 focus:outline-hidden"
+          className="group flex flex-col justify-center shrink min-w-0 focus:outline-hidden"
         >
           <span
-            className="font-serif-title text-xl sm:text-2xl lg:text-[23px] xl:text-[25px] tracking-[0.16em] uppercase font-semibold transition-colors leading-tight"
+            className="font-serif-title text-base sm:text-xl lg:text-[23px] xl:text-[25px] tracking-[0.10em] sm:tracking-[0.16em] uppercase font-semibold transition-colors leading-tight truncate"
             style={{ color: 'var(--color-text)' }}
           >
             SHANGHAI GREATER CHINA
           </span>
           <div className="flex items-center gap-2 mt-0.5">
             <span
-              className="text-[9px] sm:text-[10px] tracking-[0.22em] uppercase font-medium opacity-70"
+              className="text-[8.5px] sm:text-[10px] tracking-[0.14em] sm:tracking-[0.22em] uppercase font-medium opacity-70 truncate"
               style={{ color: 'var(--color-text-muted)' }}
             >
-              Hair Salon • Gerrard St • Central London
+              Hair Salon • Gerrard St • Chinatown W1D
             </span>
             <span
               className="hidden xl:inline-flex items-center gap-1.5 text-[9px] font-semibold px-2 py-0.5 rounded-full border opacity-90"
@@ -167,14 +167,14 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
         </div>
 
         {/* Mobile & Tablet Controls (< lg) */}
-        <div className="flex items-center gap-2 lg:hidden shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:hidden shrink-0">
           <ThemeSelector />
 
           <a
             id="mobile-header-call-btn"
             href={BUSINESS_INFO.phoneTel}
             aria-label="Call salon now"
-            className="inline-flex items-center justify-center h-10 px-3 sm:px-3.5 rounded-xs gap-1.5 active:scale-95 transition-transform"
+            className="inline-flex items-center justify-center h-10 w-10 sm:w-auto sm:px-3 rounded-xs gap-1.5 active:scale-95 transition-transform"
             style={{
               backgroundColor: 'var(--color-btn-primary-bg)',
               color: 'var(--color-btn-primary-text)',
@@ -192,8 +192,8 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
             aria-label="Toggle navigation menu"
             className="h-10 w-10 flex items-center justify-center rounded-xs border transition-colors cursor-pointer"
             style={{
-              borderColor: 'var(--color-border)',
-              backgroundColor: 'var(--color-card-subtle)',
+              borderColor: mobileMenuOpen ? 'var(--color-accent)' : 'var(--color-border)',
+              backgroundColor: mobileMenuOpen ? 'var(--color-accent-bg)' : 'var(--color-card-subtle)',
               color: 'var(--color-text)',
             }}
           >
@@ -203,7 +203,7 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
 
       </div>
 
-      {/* Mobile Drawer (Visible on < lg) */}
+      {/* Mobile Navigation Drawer (Visible on < lg) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -212,48 +212,76 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             id="mobile-navigation-drawer"
-            className="lg:hidden border-b overflow-hidden"
+            className="lg:hidden border-b overflow-hidden shadow-2xl max-h-[calc(100vh-5rem)] overflow-y-auto"
             style={{
               backgroundColor: 'var(--color-bg)',
               borderColor: 'var(--color-border)',
             }}
           >
-            <div className="px-4 sm:px-6 py-5 space-y-4 max-w-7xl mx-auto">
+            <div className="px-4 sm:px-6 py-5 space-y-5 max-w-7xl mx-auto">
+              
+              {/* 1. Theme Changer for Mobile */}
               <div
-                className="flex items-center gap-2 text-xs pb-3 border-b"
+                className="p-3.5 sm:p-4 rounded-xs border shadow-xs"
+                style={{
+                  backgroundColor: 'var(--color-card-subtle)',
+                  borderColor: 'var(--color-border)',
+                }}
+              >
+                <MobileThemeSelector />
+              </div>
+
+              {/* 2. Opening status indicator */}
+              <div
+                className="flex items-center justify-between text-xs px-1 pb-2 border-b"
                 style={{ borderColor: 'var(--color-border-subtle)', color: 'var(--color-text-muted)' }}
               >
-                <Clock className="w-3.5 h-3.5" style={{ color: 'var(--color-accent)' }} />
-                <span>{openStatus.statusText}</span>
+                <div className="flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full ${openStatus.isOpen ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+                  <span className="font-medium" style={{ color: 'var(--color-text)' }}>{openStatus.statusText}</span>
+                </div>
+                <span className="text-[10px] uppercase tracking-wider font-mono opacity-60">Gerrard St W1D</span>
               </div>
 
-              <div className="grid gap-1">
-                {navLinks.map((link) => {
-                  const isActive = activeSection === link.id;
-                  return (
-                    <button
-                      key={link.id}
-                      id={`mobile-nav-${link.id}`}
-                      onClick={() => handleNavClick(link.id)}
-                      className={`flex items-center justify-between py-2.5 px-3 rounded-xs text-sm font-medium text-left transition-colors cursor-pointer ${
-                        isActive ? 'font-semibold' : 'opacity-85'
-                      }`}
-                      style={{
-                        backgroundColor: isActive ? 'var(--color-accent-bg)' : 'transparent',
-                        color: isActive ? 'var(--color-accent)' : 'var(--color-text)',
-                      }}
-                    >
-                      <span>{link.label}</span>
-                      <ChevronRight className={`w-4 h-4 transition-transform ${isActive ? 'opacity-100 translate-x-0.5' : 'opacity-40'}`} />
-                    </button>
-                  );
-                })}
+              {/* 3. Navigation Links List */}
+              <div className="space-y-1">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-semibold block px-1 mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                  Menu Navigation
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                  {navLinks.map((link) => {
+                    const isActive = activeSection === link.id;
+                    const Icon = link.icon;
+                    return (
+                      <button
+                        key={link.id}
+                        id={`mobile-nav-${link.id}`}
+                        onClick={() => handleNavClick(link.id)}
+                        className={`flex items-center justify-between py-3 px-3.5 rounded-xs text-sm font-medium text-left transition-all active:scale-[0.99] cursor-pointer ${
+                          isActive ? 'font-semibold shadow-xs' : 'opacity-85 hover:opacity-100'
+                        }`}
+                        style={{
+                          backgroundColor: isActive ? 'var(--color-accent-bg)' : 'transparent',
+                          color: isActive ? 'var(--color-accent)' : 'var(--color-text)',
+                          borderLeft: isActive ? '3px solid var(--color-accent)' : '3px solid transparent',
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="w-4 h-4 opacity-75" />
+                          <span className="tracking-wide">{link.label}</span>
+                        </div>
+                        <ChevronRight className={`w-4 h-4 transition-transform ${isActive ? 'opacity-100 translate-x-0.5' : 'opacity-40'}`} />
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="pt-3 border-t space-y-2.5" style={{ borderColor: 'var(--color-border-subtle)' }}>
+              {/* 4. Action Buttons */}
+              <div className="pt-2 border-t space-y-2.5" style={{ borderColor: 'var(--color-border-subtle)' }}>
                 <a
                   href={BUSINESS_INFO.phoneTel}
-                  className="w-full flex items-center justify-center gap-2 py-3 text-xs uppercase tracking-[0.16em] font-semibold rounded-xs"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 text-xs uppercase tracking-[0.16em] font-semibold rounded-xs shadow-xs active:scale-[0.98] transition-transform"
                   style={{
                     backgroundColor: 'var(--color-btn-primary-bg)',
                     color: 'var(--color-btn-primary-text)',
@@ -266,7 +294,7 @@ export default function Navbar({ onOpenEnquiry }: NavbarProps) {
                   href={BUSINESS_INFO.googleMapsLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 py-2.5 border text-xs uppercase tracking-[0.14em] font-medium rounded-xs"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 border text-xs uppercase tracking-[0.14em] font-medium rounded-xs active:scale-[0.98] transition-transform"
                   style={{
                     borderColor: 'var(--color-border)',
                     color: 'var(--color-text)',
