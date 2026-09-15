@@ -3,8 +3,10 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
 
-export default defineConfig(() => {
+ export default defineConfig(() => {
   return {
+    base: '/Shanghai-Greater-China/',
+
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
